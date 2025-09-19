@@ -1,0 +1,10 @@
+C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\bin\Debug\DOAN.exe.config
+C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\bin\Debug\DOAN.exe
+C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\bin\Debug\DOAN.pdb
+C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\obj\Debug\DOAN.csproj.AssemblyReference.cache
+C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\obj\Debug\DOAN.Form1.resources
+C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\obj\Debug\DOAN.Properties.Resources.resources
+C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\obj\Debug\DOAN.csproj.GenerateResource.cache
+C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\obj\Debug\DOAN.csproj.CoreCompileInputs.cache
+C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\obj\Debug\DOAN.exe
+C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\obj\Debug\DOAN.pdb
