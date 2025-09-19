@@ -226,3 +226,189 @@ BEGIN
     ORDER BY [MaThietBi]
 END
 GO
+CREATE OR ALTER FUNCTION fn_FilterThietBi(
+    @LoaiThietBiList NVARCHAR(MAX) = NULL,
+    @MucGiaList NVARCHAR(MAX) = NULL,
+    @DoiTuongList NVARCHAR(MAX) = NULL
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT * 
+    FROM ThietBi 
+    WHERE 
+        -- Điều kiện LoaiThietBi
+        (@LoaiThietBiList IS NULL OR 
+         LoaiThietBi IN (SELECT value FROM STRING_SPLIT(@LoaiThietBiList, ',')))
+        
+        -- Điều kiện MucGia: Sửa lại để nhóm các điều kiện con
+        AND (
+            @MucGiaList IS NULL 
+            OR (
+                (GiaBan < 200000 AND 'Dưới 200.000' IN (SELECT value FROM STRING_SPLIT(@MucGiaList, ',')))
+                OR (GiaBan BETWEEN 200000 AND 400000 AND '200.000-400.000' IN (SELECT value FROM STRING_SPLIT(@MucGiaList, ',')))
+                OR (GiaBan > 400000 AND 'Trên 400.000' IN (SELECT value FROM STRING_SPLIT(@MucGiaList, ',')))
+            )
+        )
+        
+        -- Điều kiện DoiTuong: Tìm kiếm trong TenThietBi và GhiChu
+        AND (
+            @DoiTuongList IS NULL 
+            OR EXISTS (
+                SELECT 1 
+                FROM STRING_SPLIT(@DoiTuongList, ',') 
+                WHERE TenThietBi LIKE '%' + value + '%' OR GhiChu LIKE '%' + value + '%'
+            )
+        )
+)
+CREATE OR ALTER PROCEDURE sp_ThemDonHangChiTiet
+    @MaThietBi INT,
+    @SoLuongDatMua INT,
+    @GiaBan DECIMAL(18, 0)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+        
+        -- Kiểm tra thiết bị có tồn tại không
+        IF NOT EXISTS (SELECT 1 FROM ThietBi WHERE MaThietBi = @MaThietBi)
+        BEGIN
+            RAISERROR('Thiết bị không tồn tại.', 16, 1);
+            RETURN;
+        END
+        
+        -- Kiểm tra số lượng tồn kho
+        DECLARE @SoLuongHienCo INT;
+        SELECT @SoLuongHienCo = SoLuongHienCo FROM ThietBi WHERE MaThietBi = @MaThietBi;
+        
+        IF @SoLuongHienCo < @SoLuongDatMua
+        BEGIN
+            RAISERROR('Số lượng trong kho không đủ. Chỉ còn %d sản phẩm.', 16, 1, @SoLuongHienCo);
+            RETURN;
+        END
+        
+        -- Kiểm tra số lượng đặt mua phải lớn hơn 0
+        IF @SoLuongDatMua <= 0
+        BEGIN
+            RAISERROR('Số lượng đặt mua phải lớn hơn 0.', 16, 1);
+            RETURN;
+        END
+        
+        -- Kiểm tra xem đã có đơn hàng nào cho thiết bị này chưa
+        IF EXISTS (SELECT 1 FROM DONHANG_CHITIET WHERE MaThietBi = @MaThietBi)
+        BEGIN
+            -- Nếu đã có, cập nhật số lượng và giá
+            UPDATE DONHANG_CHITIET 
+            SET SoLuongDatMua = SoLuongDatMua + @SoLuongDatMua,
+                GiaBan = @GiaBan, -- Cập nhật giá mới nhất
+                NgayDat = GETDATE() -- Cập nhật ngày đặt mới nhất
+            WHERE MaThietBi = @MaThietBi;
+        END
+        ELSE
+        BEGIN
+            -- Nếu chưa có, thêm mới
+            INSERT INTO DONHANG_CHITIET (MaThietBi, SoLuongDatMua, GiaBan, NgayDat)
+            VALUES (@MaThietBi, @SoLuongDatMua, @GiaBan, GETDATE());
+        END
+        
+        -- Cập nhật số lượng tồn kho
+        UPDATE ThietBi 
+        SET SoLuongHienCo = SoLuongHienCo - @SoLuongDatMua
+        WHERE MaThietBi = @MaThietBi;
+        
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END
+GO
+
+
+
+
+CREATE or alter PROCEDURE sp_GetAllDonHangChiTiet
+AS
+BEGIN
+    SELECT 
+        tb.MaThietBi AS [Mã TB],
+        tb.TenThietBi AS [Tên Thiết Bị],
+        dh.SoLuongDatMua AS [Số Lượng],
+        FORMAT(dh.GiaBan, 'N0') as [Giá Bán],
+        dh.NgayDat AS [Ngày Đặt]  -- Hiển thị Ngày Đặt thay vì Thành Tiền
+    FROM DONHANG_CHITIET dh
+    INNER JOIN ThietBi tb ON dh.MaThietBi = tb.MaThietBi
+    ORDER BY dh.NgayDat DESC, dh.MaDonHang DESC;
+END
+GO
+CREATE OR ALTER PROCEDURE sp_GetTongSoLuongMua
+AS
+BEGIN
+    SELECT ISNULL(SUM(SoLuongDatMua), 0) AS TongSoLuongMua
+    FROM DONHANG_CHITIET;
+END
+GO
+CREATE OR ALTER PROCEDURE sp_SuaSoLuongDonHang
+    @MaThietBi INT,
+    @SoLuongMoi INT
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+        
+        -- Kiểm tra đơn hàng có tồn tại không
+        IF NOT EXISTS (SELECT 1 FROM DONHANG_CHITIET WHERE MaThietBi = @MaThietBi)
+        BEGIN
+            RAISERROR('Đơn hàng không tồn tại.', 16, 1);
+            RETURN;
+        END
+        
+        -- Kiểm tra số lượng mới phải lớn hơn 0
+        IF @SoLuongMoi <= 0
+        BEGIN
+            RAISERROR('Số lượng mới phải lớn hơn 0.', 16, 1);
+            RETURN;
+        END
+        
+        -- Lấy số lượng cũ và số lượng tồn kho hiện tại
+        DECLARE @SoLuongCu INT, @SoLuongHienCo INT;
+        
+        SELECT @SoLuongCu = SoLuongDatMua 
+        FROM DONHANG_CHITIET 
+        WHERE MaThietBi = @MaThietBi;
+        
+        SELECT @SoLuongHienCo = SoLuongHienCo 
+        FROM ThietBi 
+        WHERE MaThietBi = @MaThietBi;
+        
+        -- Tính toán chênh lệch số lượng
+        DECLARE @ChenhLech INT = @SoLuongMoi - @SoLuongCu;
+        
+        -- Kiểm tra nếu số lượng tồn kho đủ để tăng
+        IF @ChenhLech > 0 AND @SoLuongHienCo < @ChenhLech
+        BEGIN
+            RAISERROR('Số lượng trong kho không đủ để tăng. Chỉ còn %d sản phẩm.', 16, 1, @SoLuongHienCo);
+            RETURN;
+        END
+        
+        -- Cập nhật số lượng trong đơn hàng
+        UPDATE DONHANG_CHITIET 
+        SET SoLuongDatMua = @SoLuongMoi,
+            NgayDat = GETDATE() -- Cập nhật ngày đặt mới
+        WHERE MaThietBi = @MaThietBi;
+        
+        -- Cập nhật số lượng tồn kho
+        UPDATE ThietBi 
+        SET SoLuongHienCo = SoLuongHienCo - @ChenhLech
+        WHERE MaThietBi = @MaThietBi;
+        
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END
+GO
