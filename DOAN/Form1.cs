@@ -33,7 +33,7 @@ namespace DOAN
             SetupDataGridView();
             SetControlsEnabled(false); // Mặc định disable các control nhập liệu
             UpdateTongSoLuongMua(); // Thêm dòng này để load tổng số lượng khi khởi động
-            GetAllDonHangChiTiet(); 
+            GetAllDonHangChiTiet();
 
         }
         private void SetMuaControlsEnabled(bool editing)
@@ -1121,6 +1121,24 @@ namespace DOAN
                 txtTenThietBi.Text = "";
                 nudSoLuongMua.Value = 1;
             }
+        }
+
+        private void btnHoaDon_Click(object sender, EventArgs e)
+        {
+            // Tạo form ThanhToan
+            ThanhToan thanhToanForm = new ThanhToan();
+
+            // Ẩn form hiện tại
+            this.Hide();
+
+            // Hiển thị form mới
+            thanhToanForm.Show();
+
+            // Khi form ThanhToan đóng, hiển thị lại form này hoặc đóng ứng dụng
+            thanhToanForm.FormClosed += (s, args) =>
+            {
+                this.Show(); // Hoặc this.Close() nếu muốn thoát ứng dụng
+            };
         }
     }
 }

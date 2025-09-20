@@ -412,3 +412,114 @@ BEGIN
     END CATCH
 END
 GO
+CREATE OR ALTER PROCEDURE sp_GetThongTinThanhToan
+AS
+BEGIN
+    SELECT 
+        tb.MaThietBi AS [Mã Thiết Bị],
+        tb.TenThietBi AS [Tên Thiết Bị],
+        dh.SoLuongDatMua AS [Số Lượng],
+        FORMAT(dh.GiaBan, 'N0') AS [Đơn Giá],
+        FORMAT((dh.SoLuongDatMua * dh.GiaBan), 'N0') AS [Thành Tiền],
+        dh.NgayDat AS [Ngày Đặt]
+    FROM DONHANG_CHITIET dh
+    INNER JOIN ThietBi tb ON dh.MaThietBi = tb.MaThietBi
+    ORDER BY dh.NgayDat DESC;
+END
+GO
+-- Procedure xóa tất cả đơn hàng sau khi thanh toán
+CREATE OR ALTER PROCEDURE sp_XoaTatCaDonHang
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+        
+        -- Xóa tất cả đơn hàng chi tiết
+        DELETE FROM DONHANG_CHITIET;
+        
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END
+GO
+CREATE OR ALTER PROCEDURE sp_GetAllKhachHang
+AS
+BEGIN
+    SELECT 
+        MaKhachHang,
+        HoTen,
+        SoDienThoai,
+        DiaChi,
+        NgaySinh,
+        GioiTinh,
+        LoaiKhachHang,
+        ISNULL(KhuyenMaiApDung, 'Không có') AS KhuyenMaiApDung
+    FROM KhachHang
+    ORDER BY HoTen;
+END
+GO
+CREATE OR ALTER PROCEDURE sp_GetNextMaHoaDon
+AS
+BEGIN
+    SELECT ISNULL(MAX(MaHoaDon), 0) + 1 AS NextMaHoaDon
+    FROM LICHSUMUAHANG_THIETBI;
+END
+GO
+CREATE OR ALTER PROCEDURE sp_GetThongTinThanhToan
+    @KhuyenMaiPercent DECIMAL(5,2) = 0 -- Phần trăm giảm giá, mặc định là 0
+AS
+BEGIN
+    SELECT 
+        tb.TenThietBi AS [Tên Thiết Bị],
+        dh.SoLuongDatMua AS [Số Lượng],
+        FORMAT(dh.GiaBan, 'N0') AS [Đơn Giá],
+        FORMAT((dh.SoLuongDatMua * dh.GiaBan * (1 - @KhuyenMaiPercent/100)), 'N0') AS [Thành Tiền]
+    FROM DONHANG_CHITIET dh
+    INNER JOIN ThietBi tb ON dh.MaThietBi = tb.MaThietBi
+    ORDER BY dh.NgayDat DESC;
+END
+GO
+CREATE OR ALTER PROCEDURE sp_ThemKhachHangMoi
+    @HoTen NVARCHAR(100),
+    @SoDienThoai VARCHAR(15),
+    @DiaChi NVARCHAR(200),
+    @NgaySinh DATE,
+    @GioiTinh NVARCHAR(10)
+AS
+BEGIN
+    INSERT INTO KhachHang (HoTen, SoDienThoai, DiaChi, NgaySinh, GioiTinh, LoaiKhachHang, KhuyenMaiApDung)
+    VALUES (@HoTen, @SoDienThoai, @DiaChi, @NgaySinh, @GioiTinh, N'Khách lẻ', N'Không có');
+    
+    SELECT SCOPE_IDENTITY() AS MaKhachHang;
+END
+GO
+CREATE OR ALTER PROCEDURE sp_ThemHoaDonChiTiet
+    @MaHoaDon INT,
+    @MaThietBi INT,
+    @MaKhachHang INT,
+    @MaNhanVien INT,
+    @SoLuong INT,
+    @GiaBan DECIMAL(18,2),
+    @NgayThanhToan DATE,
+    @KhuyenMaiApDung NVARCHAR(100),
+    @TongTien DECIMAL(18,2)
+AS
+BEGIN
+    INSERT INTO LICHSUMUAHANG_THIETBI (MaHoaDon, MaThietBi, MaKhachHang, MaNhanVien, SoLuong, GiaBan, NgayThanhToan, KhuyenMaiApDung, TongTien)
+    VALUES (@MaHoaDon, @MaThietBi, @MaKhachHang, @MaNhanVien, @SoLuong, @GiaBan, @NgayThanhToan, @KhuyenMaiApDung, @TongTien);
+END
+GO
+-- Procedure lấy thông tin thiết bị từ DONHANG_CHITIET
+CREATE OR ALTER PROCEDURE sp_GetThongTinDonHang
+AS
+BEGIN
+    SELECT 
+        MaThietBi,
+        SoLuongDatMua,
+        GiaBan
+    FROM DONHANG_CHITIET;
+END
+GO

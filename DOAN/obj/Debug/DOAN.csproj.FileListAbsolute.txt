@@ -8,3 +8,4 @@ C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\obj\Debug\DOAN.csproj.Genera
 C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\obj\Debug\DOAN.csproj.CoreCompileInputs.cache
 C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\obj\Debug\DOAN.exe
 C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\obj\Debug\DOAN.pdb
+C:\Users\PC\Desktop\HK1_2026\HQTCSDL\DOAN_TOAN\DOAN\obj\Debug\DOAN.ThanhToan.resources

@@ -3,11 +3,19 @@
   "WorkspaceRootPath": "C:\\Users\\PC\\Desktop\\HK1_2026\\HQTCSDL\\DOAN_TOAN\\DOAN\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{BF38A4E0-BCC6-4EA0-9B02-9910F5F0258B}|DOAN.csproj|c:\\users\\pc\\desktop\\hk1_2026\\hqtcsdl\\doan_toan\\doan\\thanhtoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BF38A4E0-BCC6-4EA0-9B02-9910F5F0258B}|DOAN.csproj|solutionrelative:thanhtoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BF38A4E0-BCC6-4EA0-9B02-9910F5F0258B}|DOAN.csproj|C:\\Users\\PC\\Desktop\\HK1_2026\\HQTCSDL\\DOAN_TOAN\\DOAN\\thanhtoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{BF38A4E0-BCC6-4EA0-9B02-9910F5F0258B}|DOAN.csproj|solutionrelative:thanhtoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{BF38A4E0-BCC6-4EA0-9B02-9910F5F0258B}|DOAN.csproj|c:\\users\\pc\\desktop\\hk1_2026\\hqtcsdl\\doan_toan\\doan\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BF38A4E0-BCC6-4EA0-9B02-9910F5F0258B}|DOAN.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BF38A4E0-BCC6-4EA0-9B02-9910F5F0258B}|DOAN.csproj|c:\\users\\pc\\desktop\\hk1_2026\\hqtcsdl\\doan_toan\\doan\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{BF38A4E0-BCC6-4EA0-9B02-9910F5F0258B}|DOAN.csproj|C:\\Users\\PC\\Desktop\\HK1_2026\\HQTCSDL\\DOAN_TOAN\\DOAN\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{BF38A4E0-BCC6-4EA0-9B02-9910F5F0258B}|DOAN.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
@@ -39,19 +47,44 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "ThanhToan.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\Desktop\\HK1_2026\\HQTCSDL\\DOAN_TOAN\\DOAN\\ThanhToan.cs",
+              "RelativeDocumentMoniker": "ThanhToan.cs",
+              "ToolTip": "C:\\Users\\PC\\Desktop\\HK1_2026\\HQTCSDL\\DOAN_TOAN\\DOAN\\ThanhToan.cs",
+              "RelativeToolTip": "ThanhToan.cs",
+              "ViewState": "AgIAAEUBAAAAAAAAAAAuwJQBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-20T07:57:44.42Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ThanhToan.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\PC\\Desktop\\HK1_2026\\HQTCSDL\\DOAN_TOAN\\DOAN\\ThanhToan.cs",
+              "RelativeDocumentMoniker": "ThanhToan.cs",
+              "ToolTip": "C:\\Users\\PC\\Desktop\\HK1_2026\\HQTCSDL\\DOAN_TOAN\\DOAN\\ThanhToan.cs [Design]",
+              "RelativeToolTip": "ThanhToan.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-20T02:23:54.027Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\PC\\Desktop\\HK1_2026\\HQTCSDL\\DOAN_TOAN\\DOAN\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "C:\\Users\\PC\\Desktop\\HK1_2026\\HQTCSDL\\DOAN_TOAN\\DOAN\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAAFMBAAAAAAAAAAAmwPMDAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAFAEAAAAAAAAAAAqwHcEAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-19T14:01:07.482Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\Users\\PC\\Desktop\\HK1_2026\\HQTCSDL\\DOAN_TOAN\\DOAN\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
@@ -63,13 +96,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Form1.Designer.cs",
               "DocumentMoniker": "C:\\Users\\PC\\Desktop\\HK1_2026\\HQTCSDL\\DOAN_TOAN\\DOAN\\Form1.Designer.cs",
               "RelativeDocumentMoniker": "Form1.Designer.cs",
               "ToolTip": "C:\\Users\\PC\\Desktop\\HK1_2026\\HQTCSDL\\DOAN_TOAN\\DOAN\\Form1.Designer.cs",
               "RelativeToolTip": "Form1.Designer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADECAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-18T16:25:50.976Z",
               "EditorCaption": ""
